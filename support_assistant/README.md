@@ -20,7 +20,7 @@ graph TD
     
     Context --> Gen{Generation Mode}
     Gen -->|MOCK_LLM=1| Mock[Canned Template Answer]
-    Gen -->|MOCK_LLM=0| Real[Simulated LLM stub (validate-and-retry demo)]
+    Gen -->|MOCK_LLM=0| Real["Simulated LLM stub (validate-and-retry demo)"]
     
     Direct & Mock & Real --> Output[Pydantic JSON: answer, sources, confidence]
 ```
