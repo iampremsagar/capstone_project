@@ -38,7 +38,7 @@ graph TD
 - **Missing Values**:
     - **Scraper Drops**: Listings missing required tags (title, price, rating, or availability) are skipped during scraping to ensure the final dataset contains only complete records.
     - **Imputation**: Implemented **median imputation** for numeric fields (`price_gbp` and `rating`).
-    - **Justification**: Median imputation was chosen over dropping rows to maintain the dataset size and ensure the final count remained above the 60-book threshold, while remaining robust against potential outliers that would skew a mean imputation.
+    - **Justification**: Median imputation is applied to numeric fields if parsing produces missing values. This preserves dataset size while being less sensitive to outliers than mean imputation, ensuring the final count remains above the 60-book threshold.
 
 ### 3. Currency Conversion
 As per project requirements, a fixed baseline conversion rate was used to compute the `price_inr` column:
