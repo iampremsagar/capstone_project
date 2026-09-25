@@ -58,4 +58,7 @@ If you prefer to install all dependencies at once, you can run the following:
 ```bash
 pip install requests beautifulsoup4 pandas seaborn scikit-learn imbalanced-learn joblib fastapi uvicorn chromadb langgraph sentence-transformers pydantic
 ```
+
+## 📈 Git Workflow
+The project follows a professional Git workflow. All major features were developed on dedicated feature branches, tested, and integrated into the `main` branch via Pull Requests to ensure code stability and a clear audit trail of changes.
 \n# Project verified and ready for submission.
