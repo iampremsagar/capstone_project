@@ -2,7 +2,7 @@
 
 This repository contains a connected AI/ML platform for Zepto, consisting of three integrated modules: a raw-to-relational data pipeline, an end-to-end analytics and predictive modeling pipeline, and a grounded GenAI support assistant.
 
-## 📁 Project Structure
+## Project Structure
 
 ```text
 .
@@ -13,7 +13,7 @@ This repository contains a connected AI/ML platform for Zepto, consisting of thr
 
 ---
 
-## 🚀 Module 1: Data Pipeline (`/data_pipeline`)
+## Module 1: Data Pipeline (`/data_pipeline`)
 **Goal**: Scrape product data from a public site and load it into a normalized SQLite database.
 
 ### Setup & Execution
@@ -26,7 +26,7 @@ The pipeline scrapes 85 books across 4 categories from `books.toscrape.com`. It 
 
 ---
 
-## 📊 Module 2: Analytics Pipeline (`/analytics`)
+## Module 2: Analytics Pipeline (`/analytics`)
 **Goal**: Profile the Titanic dataset and build a predictive survival model.
 
 ### Setup & Execution
@@ -35,11 +35,11 @@ The pipeline scrapes 85 books across 4 categories from `books.toscrape.com`. It 
 3. Run the analysis: Open and execute `Titanic_Survival_Prediction_Model.ipynb`.
 
 ### Design Summary
-The pipeline follows a rigorous data science workflow: profiling missing values $\rightarrow$ IQR-based outlier detection $\rightarrow$ stratified splitting $\rightarrow$ leakage-free preprocessing. I compared three classifiers (Logistic Regression, Decision Tree, Random Forest) and used SMOTE to handle class imbalance. The final model is exported as a complete `scikit-learn` Pipeline (`.joblib`) including the fitted scaler and encoder for end-to-end raw data inference.
+The pipeline follows a rigorous data science workflow: profiling missing values $\rightarrow$ IQR-based outlier detection $\rightarrow$ stratified splitting $\rightarrow$ leakage-free preprocessing. I compared three classifiers (Logistic Regression, Decision Tree, Random Forest) and found that `class_weight='balanced'` provided the best handling for class imbalance. The final model is exported as a complete `scikit-learn` Pipeline (`.joblib`) including the fitted scaler and encoder for end-to-end raw data inference.
 
 ---
 
-## 🤖 Module 3: Support Assistant (`/support_assistant`)
+## Module 3: Support Assistant (`/support_assistant`)
 **Goal**: A grounded RAG service to answer policy questions using LangGraph and FastAPI.
 
 ### Setup & Execution
@@ -53,11 +53,11 @@ The assistant uses a RAG (Retrieval-Augmented Generation) architecture. It emplo
 
 ---
 
-## 🛠️ General Installation
+## General Installation
 If you prefer to install all dependencies at once, you can run the following:
 ```bash
 pip install requests beautifulsoup4 pandas seaborn scikit-learn imbalanced-learn joblib fastapi uvicorn chromadb langgraph sentence-transformers pydantic
 ```
 
-## 📈 Git Workflow
+## Git Workflow
 The project follows a professional Git workflow. All major features were developed on dedicated feature branches, tested, and integrated into the `main` branch via Pull Requests to ensure code stability and a clear audit trail of changes.

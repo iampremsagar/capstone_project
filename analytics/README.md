@@ -47,7 +47,7 @@ This module focuses on the end-to-end data science workflow: from profiling the 
     - **Encoding**: `OneHotEncoder` applied to categorical features with `drop='first'` to avoid the dummy variable trap.
     - **Leakage Prevention**: All preprocessing is fit only on the training split and applied to the test split.
 - **Classifiers**: Evaluated Logistic Regression, Decision Tree, and Random Forest.
-- **Imbalance Handling**: Compared baseline performance against `class_weight='balanced'` and **SMOTE** (applied only to the training fold) to optimize the F1-score for survivors.
+- **Imbalance Handling**: Compared baseline performance against `class_weight='balanced'` and **SMOTE** (applied only to the training fold). The `class_weight='balanced'` strategy was found to be the most effective for optimizing the F1-score for survivors.
 - **Tuning**: Used `GridSearchCV` for the Random Forest, reporting the **Out-of-Bag (OOB) score** as a reliable estimate of generalization performance.
 
 ### 3. Regression Task
