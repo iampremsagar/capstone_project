@@ -3,29 +3,35 @@
 ## Overview
 This module focuses on the end-to-end data science workflow: from profiling the classic Titanic dataset to building and evaluating a robust predictive modeling pipeline. It transitions from Exploratory Data Analysis (EDA) to rigorous machine learning evaluation.
 
-```mermaid
-graph TD
-    Start[Titanic Dataset] --> EDA[EDA: Profiling & Cleaning]
-    EDA -->|Impute/Drop| CleanData[Cleaned Dataset]
-    
-    CleanData --> Split{Stratified Split}
-    Split -->|80%| Train[Train Set]
-    Split -->|20%| Test[Test Set]
-    
-    subgraph "The Pipeline (Leakage Prevention)"
-    Train --> Fit[Fit Preprocessing: Scaler/Encoder]
-    Fit --> Model[Train Classifiers: RF, DT, LogReg]
-    end
-    
-    Model --> Transform[Transform Test Set]
-    Test --> Transform
-    Transform --> Eval[Evaluation: F1, AUC, Confusion Matrix]
-    
-    Eval --> Final[Save as .joblib Pipeline]
+### Pipeline Architecture
+```text
+[ Titanic Dataset ]
+       |
+       v
+[ EDA: Profiling & Cleaning ] ---> [ Cleaned Dataset ]
+                                          |
+                                          v
+                                 [ Stratified Split ]
+                                 /               \
+                         (80%) Train Set     (20%) Test Set
+                                |                   |
+                                v                   |
+                   [ Fit Preprocessing: Scaler/Encoder ]
+                                |                   |
+                                v                   |
+                   [ Train Classifiers: RF, DT, LogReg ]
+                                |                   |
+                                v                   v
+                        [ Transform Test Set ] <-----+
+                                |
+                                v
+                   [ Evaluation: F1, AUC, Confusion Matrix ]
+                                |
+                                v
+                    [ Save as .joblib Pipeline ]
 ```
 
 ## Design Decisions
-
 
 ### 1. Data Profiling & Cleaning
 - **Missing Values**: Followed the project threshold rule:
@@ -41,7 +47,7 @@ graph TD
     - **Encoding**: `OneHotEncoder` applied to categorical features with `drop='first'` to avoid the dummy variable trap.
     - **Leakage Prevention**: All preprocessing is fit only on the training split and applied to the test split.
 - **Classifiers**: Evaluated Logistic Regression, Decision Tree, and Random Forest.
-- **Imbalance Handling**: Compared baseline performance against `class_weight='balanced'` and **SMOTE** (applied only to the training fold) to optimize the F1-score for survivors.
+- **Imbalance Handling**: Compared baseline performance against `class_weight='balanced'` and **SMOTE** (applied only to the training fold). The `class_weight='balanced'` strategy was found to be the most effective for optimizing the F1-score for survivors.
 - **Tuning**: Used `GridSearchCV` for the Random Forest, reporting the **Out-of-Bag (OOB) score** as a reliable estimate of generalization performance.
 
 ### 3. Regression Task
@@ -59,6 +65,6 @@ graph TD
    pip install pandas seaborn scikit-learn imbalanced-learn joblib
    ```
 2. **Run**:
-   Execute `Titanic_Survival_Prediction_Model.ipynb` (or the separate `01_eda.ipynb` and `02_modeling.ipynb` if split).
+   Execute `Titanic_Survival_Prediction_Model.ipynb`.
    - The notebook generates `titanic.csv` as an offline fallback.
    - The final pipeline is saved as `titanic_survival_pipeline.joblib`.

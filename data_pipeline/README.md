@@ -3,26 +3,35 @@
 ## Overview
 This module implements a complete data engineering pipeline that scrapes product data from a public practice site, cleans and transforms the data, and stores it in a normalized SQLite relational database. This represents the "raw-to-relational" workflow required for catalog and competitive intelligence tasks.
 
-```mermaid
-graph TD
-    A[Website: books.toscrape.com] -->|Scrape: Requests + BS4| B(Raw Data)
-    B --> C{Cleaning Stage}
-    C -->|Strip £| D[price_gbp]
-    C -->|Map 'Three' -> 3| E[rating]
-    C -->|Parse Text -> Bool| F[in_stock]
-    
-    D & E & F --> G[Fixed Rate Conversion: 1 GBP = 105.50 INR]
-    G --> H[price_inr]
-    
-    H --> I{Relational Store}
-    I -->|Normalize| J[(Table: categories)]
-    I -->|Link via FK| K[(Table: books)]
-    
-    J & K --> L[SQL Queries / Pandas Merge]
+### Pipeline Architecture
+```text
+[ Website: books.toscrape.com ]
+               |
+               v (Scrape: Requests + BS4)
+               |
+         [ Raw Data ]
+               |
+               v
+       { Cleaning Stage }
+       /       |        \
+ [ price_gbp ] [ rating ] [ in_stock ]
+       \       |        /
+               v
+ [ Fixed Rate Conversion: 1 GBP = 105.50 INR ]
+               |
+               v
+         [ price_inr ]
+               |
+               v
+       { Relational Store }
+       /                 \
+[ Table: categories ] <-> [ Table: books ]
+       \                 /
+               v
+    [ SQL Queries / Pandas Merge ]
 ```
 
 ## Design Decisions
-
 
 ### 1. Scraping Strategy
 - **Source**: `books.toscrape.com` — a public site for scraping practice.

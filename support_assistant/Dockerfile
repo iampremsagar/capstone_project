@@ -8,5 +8,6 @@ RUN python -c "from sentence_transformers import SentenceTransformer; SentenceTr
 
 COPY main.py .
 COPY docs/ ./docs/
+EXPOSE 7860
 
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "7860"]

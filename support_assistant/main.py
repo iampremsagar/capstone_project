@@ -8,7 +8,7 @@ from langgraph.graph import StateGraph, START, END
 from typing import TypedDict
 
 # --- Configuration ---
-MOCK_LLM = 0 if os.environ.get("MOCK_LLM", "1") == "0" else 1
+MOCK_LLM = int(os.environ.get("MOCK_LLM", "1") != "0")
 
 PROMPT_TEMPLATE = """
 Role: You are an Expert Zepto Support Agent.

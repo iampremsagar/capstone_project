@@ -3,26 +3,38 @@
 ## Overview
 The Support Assistant is a complete GenAI service designed to answer policy-related questions grounded in Zepto's official documentation. It implements a RAG (Retrieval-Augmented Generation) pipeline orchestrated by LangGraph and served via FastAPI.
 
-```mermaid
-graph TD
-    User[User Query] --> Intent{classify_intent}
-    
-    Intent -->|General Question| Direct[direct_answer Node]
-    Intent -->|Policy Question| Retrieve[retrieve_and_answer Node]
-    
-    subgraph "The Knowledge Base"
-    Docs[Policy Docs] --> Embed[MiniLM-L6 Embedding]
-    Embed --> VectorDB[(ChromaDB)]
-    end
-    
-    Retrieve -->|Cosine Similarity| VectorDB
-    VectorDB -->|Top 3 Chunks| Context[Retrieved Context]
-    
-    Context --> Gen{Generation Mode}
-    Gen -->|MOCK_LLM=1| Mock[Canned Template Answer]
-    Gen -->|MOCK_LLM=0| Real["Simulated LLM stub (validate-and-retry demo)"]
-    
-    Direct & Mock & Real --> Output[Pydantic JSON: answer, sources, confidence]
+### Pipeline Architecture
+```text
+[ User Query ]
+       |
+       v
+{ classify_intent }
+       |
+       +---> [ General Question ] ---> [ direct_answer Node ] ---+
+       |                                                          |
+       +---> [ Policy Question ]                                  |
+                     |                                            |
+                     v                                            |
+             [ retrieve_and_answer Node ]                        |
+                     |                                            |
+                     v                                            |
+             [ ChromaDB (VectorDB) ] <--- [ Policy Docs ]         |
+                     |                      (Embeddings)           |
+                     v                                            |
+             [ Retrieved Context ]                                |
+                     |                                            |
+                     v                                            |
+             { Generation Mode }                                  |
+             /               \                                    |
+      (MOCK_LLM=1)       (MOCK_LLM=0)                             |
+    [ Canned Answer ]  [ Simulated LLM Stub ]                     |
+             \               /                                   |
+              \             /                                     |
+               v           v                                      |
+       [ Pydantic JSON: answer, sources, confidence ] <-----------+
+                       |
+                       v
+           [ FastAPI /ask endpoint ]
 ```
 
 ## Architecture Description
