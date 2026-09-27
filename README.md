@@ -54,7 +54,7 @@ The assistant uses a RAG (Retrieval-Augmented Generation) architecture. It emplo
 ---
 
 ## General Installation
-If you prefer to install all dependencies at once, you can run the following:
+Each module includes its own `requirements.txt` for isolated dependency management. If you prefer to install all dependencies at once, you can run the following:
 ```bash
 pip install requests beautifulsoup4 pandas seaborn scikit-learn imbalanced-learn joblib fastapi uvicorn chromadb langgraph sentence-transformers pydantic
 ```
